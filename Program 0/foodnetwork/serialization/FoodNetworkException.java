@@ -5,7 +5,7 @@
  **********************************/
 package foodnetwork.serialization;
 
-public class FoodNetworkException extends Throwable {
+public class FoodNetworkException extends Exception {
 	
 	private static final long serialVersionUID = 1L;
 
@@ -16,8 +16,8 @@ public class FoodNetworkException extends Throwable {
 	 * @throws Exception 
 	 */
 	public FoodNetworkException(java.lang.String message,
-            java.lang.Throwable cause) throws Exception{
-		throw new Exception(message, cause);
+            java.lang.Throwable cause) throws FoodNetworkException{
+		super(message, cause);
 	}
 
 	/**
@@ -25,7 +25,7 @@ public class FoodNetworkException extends Throwable {
 	 * @param message - exception message
 	 * @throws Exception 
 	 */
-	public FoodNetworkException(java.lang.String message) throws Exception{
-		throw new Exception(message);
+	public FoodNetworkException(java.lang.String message) throws FoodNetworkException{
+		super(message);
 	}
 }

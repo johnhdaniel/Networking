@@ -37,25 +37,21 @@ public enum MealType implements java.io.Serializable, Comparable<MealType> {
 	 */
 	public static MealType getMealType(char code) throws FoodNetworkException {
 		MealType result = null;
-		try {
-			switch(code){
-				case 'B':
-					result = Breakfast;
-					break;
-				case 'L':
-					result = Lunch;
-					break;
-				case 'D':
-					result = Dinner;
-					break;
-				case 'S':
-					result = Snack;
-					break;
-				default:
-					throw new FoodNetworkException("Bad Code");
-			}
-		} catch (Exception e) {		
-			e.printStackTrace();
+		switch(code){
+			case 'B':
+				result = Breakfast;
+				break;
+			case 'L':
+				result = Lunch;
+				break;
+			case 'D':
+				result = Dinner;
+				break;
+			case 'S':
+				result = Snack;
+				break;
+			default:
+				throw new FoodNetworkException("Bad Code");
 		}
 		return result;	
 	}

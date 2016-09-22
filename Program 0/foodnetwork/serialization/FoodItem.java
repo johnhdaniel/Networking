@@ -5,9 +5,6 @@
  **********************************/
 package foodnetwork.serialization;
 
-import java.io.IOException;
-import java.util.Scanner;
-
 /**
  * @author John
  *
@@ -26,24 +23,35 @@ public class FoodItem {
 	 * @param calories - number of calories in food item
 	 * @param fat - grams of fat in food item
 	 * @throws FoodNetworkException if deserialization or validation failure
-	 * @throws Exception 
 	 */
 	public FoodItem(java.lang.String name,
 	                MealType mealType,
 	                long calories,
 	                java.lang.String fat)
-	         throws FoodNetworkException, Exception {
-		try{
-			this.name = name;
-			this.mealType = mealType;
-			this.calories = calories;
-			this.fat = fat;
-			if (0 == 1){
-				throw new FoodNetworkException("hello");
-			}
-		} catch (FoodNetworkException e){
-			
+	         throws FoodNetworkException {
+		if (null == name || name == ""){
+			throw new FoodNetworkException("Bad name");
 		}
+		if (null == mealType){
+			throw new FoodNetworkException("Bad mealType");
+		}
+		if (calories < 0){
+			throw new FoodNetworkException("Bad calories");
+		}
+		if (null == fat || fat == ""){
+			throw new FoodNetworkException("Bad fat");
+		}
+		try{
+			if (Double.parseDouble(fat) < 0){
+				throw new FoodNetworkException("Bad fat");
+			}
+		} catch (NumberFormatException e){
+			throw new FoodNetworkException("Bad fat");
+		}
+		this.name = name;
+		this.mealType = mealType;
+		this.calories = calories;
+		this.fat = fat;		
 	}
 
 	/**
@@ -55,12 +63,34 @@ public class FoodItem {
 	public FoodItem(MessageInput in)
 	         throws FoodNetworkException,
 	                java.io.EOFException{
-		String scanner = new String(in.messageIn);
-		Scanner scan = new Scanner(scanner);
-		name = scan.next();
-		mealType = MealType.getMealType(scan.next().charAt(0));
-		calories = scan.nextLong();
-		fat = scan.next();
+		
+		String newName = in.getName();
+		MealType newMealType = in.getMealType();
+		long newCalories = in.getCalories();
+		String newFat = in.getFat();
+		if (null == newName || newName == ""){
+			throw new FoodNetworkException("Bad name");
+		}
+		if (null == newMealType){
+			throw new FoodNetworkException("Bad mealType");
+		}
+		if (newCalories < 0){
+			throw new FoodNetworkException("Bad calories");
+		}
+		if (null == newFat || newFat == ""){
+			throw new FoodNetworkException("Bad fat");
+		}
+		try{
+			if (Double.parseDouble(newFat) < 0){
+				throw new FoodNetworkException("Bad fat");
+			}
+		} catch (NumberFormatException e){
+			throw new FoodNetworkException("Bad fat");
+		}
+		name = newName;
+		mealType = newMealType;
+		calories = newCalories;
+		fat = newFat;
 	}
 	
 	/**
@@ -70,7 +100,10 @@ public class FoodItem {
 	 */
 	public void encode(MessageOutput out)
 	            throws FoodNetworkException{
-		java.lang.String serialized = name.length() + " " + name;
+		if (out == null){
+			throw new FoodNetworkException("Bad MessageOutput");
+		}
+		String serialized = name.length() + " " + name;
 		serialized+= mealType.getMealTypeCode();
 		serialized+= calories + " ";
 		serialized+= fat + " ";
@@ -105,6 +138,9 @@ public class FoodItem {
 	 */
 	public final void setName(java.lang.String name)
 	                   throws FoodNetworkException {
+		if (null == name){
+			throw new FoodNetworkException("Bad name");
+		}
 		this.name = name;
 	}
 
@@ -123,6 +159,9 @@ public class FoodItem {
 	 */
 	public final void setMealType(MealType mealType)
 	                       throws FoodNetworkException{
+		if (null == mealType){
+			throw new FoodNetworkException("Bad mealType");
+		}
 		this.mealType = mealType;
 	}
 
@@ -141,6 +180,9 @@ public class FoodItem {
 	 */
 	public final void setCalories(long calories)
 	                       throws FoodNetworkException{
+		if (calories < 0){
+			throw new FoodNetworkException("Bad Calories");
+		}
 		this.calories = calories;
 	}
 
@@ -159,6 +201,9 @@ public class FoodItem {
 	 */
 	public final void setFat(java.lang.String fat)
 	                  throws FoodNetworkException {
+		if (null == fat){
+			throw new FoodNetworkException("Bad fat");
+		}
 		this.fat = fat;
 	}
 
@@ -169,7 +214,7 @@ public class FoodItem {
 	public int hashCode(){
 		int hash;
 		hash = (int) calories;
-		hash*= Integer.parseInt(fat);
+		hash*= Double.parseDouble(fat);
 		hash*= 7;
 		hash = (int) Math.sqrt(hash);
 		return hash;
@@ -179,7 +224,10 @@ public class FoodItem {
 	 * Overrides:
 	 * equals in class java.lang.Object
 	 */
-	public boolean equals(java.lang.Object obj){
+	public boolean equals(java.lang.Object obj) {
+		if (null == this || null == obj){
+			return false;
+		}
 		return this.toString().equals(obj.toString());
 	}
 }
