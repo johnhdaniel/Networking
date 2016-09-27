@@ -13,19 +13,17 @@ public class FoodNetworkException extends Exception {
 	 * Constructs food network exception
 	 * @param message - exception message
 	 * @param cause - exception cause
-	 * @throws Exception 
 	 */
-	public FoodNetworkException(java.lang.String message,
-            java.lang.Throwable cause) throws FoodNetworkException{
+	public FoodNetworkException(String message,
+            				Throwable cause) throws FoodNetworkException{
 		super(message, cause);
 	}
 
 	/**
 	 * Constructs food network exception with null cause
 	 * @param message - exception message
-	 * @throws Exception 
 	 */
-	public FoodNetworkException(java.lang.String message) throws FoodNetworkException{
+	public FoodNetworkException(String message) throws FoodNetworkException{
 		super(message);
 	}
 }

@@ -5,7 +5,9 @@
  **********************************/
 package foodnetwork.serialization;
 
-public enum MealType implements java.io.Serializable, Comparable<MealType> {
+import java.io.Serializable;
+
+public enum MealType implements Serializable, Comparable<MealType> {
 	Breakfast,
 	Dinner,
 	Lunch,
@@ -16,7 +18,7 @@ public enum MealType implements java.io.Serializable, Comparable<MealType> {
 	 * @return result - the code of the mealType
 	 */
 	public char getMealTypeCode(){
-		char result = '\0';
+		char result = ' ';
 		if (this.name().equals(Breakfast.name())){
 			result = 'B';
 		} else if (this.name().equals(Lunch.name())){

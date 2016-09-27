@@ -13,6 +13,9 @@ public class GetFood extends FoodMessage {
 	 * @throws FoodNetworkException if validation fails
 	 */
 	public GetFood(long messageTimestamp) throws FoodNetworkException {
+		if (messageTimestamp < 0){
+			throw new FoodNetworkException("Bad message timestamp");
+		}
 		this.messageTimestamp = messageTimestamp;
 	}
 	
@@ -22,8 +25,13 @@ public class GetFood extends FoodMessage {
 	}
 	
 	@Override
+	public void getEncode(MessageOutput out) throws FoodNetworkException {
+		out.write(getRequest() + SPACE + NEWLINE);
+	}
+	
+	@Override
 	public String getRequest() {
-		return "GET ";
+		return GET_REQUEST;
 	}
 	
 }

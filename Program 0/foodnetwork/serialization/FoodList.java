@@ -25,6 +25,12 @@ public class FoodList extends FoodMessage {
 	 */
 	public FoodList(long messageTimestamp, long modifiedTimestamp)
 						throws FoodNetworkException{
+		if (messageTimestamp < 0){
+			throw new FoodNetworkException("Bad meesagetimestamp");
+		}
+		if (modifiedTimestamp < 0){
+			throw new FoodNetworkException("Bad modified timestamp");
+		}
 		this.messageTimestamp = messageTimestamp;
 		this.modifiedTimestamp = modifiedTimestamp;
 	}
@@ -49,6 +55,9 @@ public class FoodList extends FoodMessage {
 	 */
 	public final void setModifiedTimestamp(long modifiedTimestamp)
 							throws FoodNetworkException{
+		if (modifiedTimestamp < 0){
+			throw new FoodNetworkException("Bad modified timestamp");
+		}
 		this.modifiedTimestamp = modifiedTimestamp;
 	}
 	
@@ -85,17 +94,21 @@ public class FoodList extends FoodMessage {
 	 }
 	
 	@Override
-	public String getRequest() {
-		String requestString = "LIST ";
-		requestString+= modifiedTimestamp + " ";
-		requestString+= foodItemList.size() + " ";
+	public void getEncode(MessageOutput out) throws FoodNetworkException{
+		String encodeString = getRequest() + " ";
+		encodeString+= modifiedTimestamp + " ";
+		encodeString+= foodItemList.size() + " ";
+		out.write(encodeString);;
 		for(int i = 0; i < foodItemList.size(); i++){
-			requestString+= foodItemList.get(i).getName().length() + " ";
-			requestString+= foodItemList.get(i).getName();
-			requestString+= foodItemList.get(i).getMealType().getMealTypeCode();
-			requestString+= foodItemList.get(i).getCalories() + " ";
-			requestString+= foodItemList.get(i).getFat() + " ";
+			foodItemList.get(i).encode(out);
 		}
+		out.write(Character.toString(NEWLINE));
+	}
+	
+	@Override
+	public String getRequest() {
+		String requestString = LIST_REQUEST;
+		
 		return requestString;
 	}
 	

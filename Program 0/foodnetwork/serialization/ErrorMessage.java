@@ -17,6 +17,12 @@ public class ErrorMessage extends FoodMessage {
 	 */
 	public ErrorMessage(long messageTimestamp, String errorMessage)
 							throws FoodNetworkException {
+		if (messageTimestamp < 0){
+			throw new FoodNetworkException("Bad meesagetimestamp");
+		}
+		if (errorMessage == null){
+			throw new FoodNetworkException("Null error message");
+		}
 		this.messageTimestamp = messageTimestamp;
 		this.errorMessage = errorMessage;
 	}
@@ -41,6 +47,9 @@ public class ErrorMessage extends FoodMessage {
 	 */
 	public final void setErrorMessage(String errorMessage)
 						throws FoodNetworkException {
+		if (errorMessage == null){
+			throw new FoodNetworkException("null error message");
+		}
 		this.errorMessage = errorMessage;
 	}
 		
@@ -61,8 +70,13 @@ public class ErrorMessage extends FoodMessage {
 	 }
 	
 	@Override
+	public void getEncode(MessageOutput out) throws FoodNetworkException{
+		out.write(getRequest() + SPACE + errorMessage.length() + SPACE + errorMessage + NEWLINE);
+	}
+	
+	@Override
 	public String getRequest() {
-		return "ERROR " + errorMessage;
+		return ERROR_REQUEST;
 	}	
 
 }

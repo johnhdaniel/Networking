@@ -1,7 +1,7 @@
 package foodnetwork.serialization;
 
 /**
- * Represents an AddFoor and provides serialization/deserialization
+ * Represents an AddFood and provides serialization/deserialization
  *
  */
 public class AddFood extends FoodMessage {
@@ -16,6 +16,12 @@ public class AddFood extends FoodMessage {
 	 */
 	public AddFood (long messageTimestamp, FoodItem foodItem)
 					throws FoodNetworkException{
+		if (messageTimestamp < 0){
+			throw new FoodNetworkException("Bad meesagetimestamp");
+		}
+		if (foodItem == null){
+			throw new FoodNetworkException("Null fooditem");
+		}
 		this.messageTimestamp = messageTimestamp;
 		this.foodItem = foodItem;
 	}
@@ -40,17 +46,24 @@ public class AddFood extends FoodMessage {
 	 */
 	public final void setFoodItem(FoodItem foodItem)
 						throws FoodNetworkException {
+		if (foodItem == null){
+			throw new FoodNetworkException("Null fooditem");
+		}
 		this.foodItem = foodItem;
 	}
 	
 	@Override
+	public void getEncode(MessageOutput out) throws FoodNetworkException{
+		
+		out.write(getRequest() + SPACE);
+		foodItem.encode(out);
+		out.write(Character.toString(NEWLINE));
+	}
+	
+	@Override
 	public String getRequest() {
-		String requestString = "ADD ";
-		requestString+= foodItem.getName().length() + " ";
-		requestString+= foodItem.getName();
-		requestString+= foodItem.getMealType().getMealTypeCode();
-		requestString+= foodItem.getCalories() + " ";
-		requestString+= foodItem.getFat() + " ";
+		String requestString = ADD_REQUEST;
+		
 		
 		return requestString;
 	}

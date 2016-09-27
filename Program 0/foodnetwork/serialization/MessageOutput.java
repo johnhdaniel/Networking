@@ -6,20 +6,21 @@
 package foodnetwork.serialization;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 public class MessageOutput {
 
-	public java.lang.String	  messageOut;
+	public String	  messageOut;
 	public OutputStreamWriter messageWriter;
 	public static final Charset CHARSET = StandardCharsets.US_ASCII;
 	/**
 	 * Constructs a new output source from an OutputStream
 	 * @param out - byte output source
 	 */
-	public MessageOutput(java.io.OutputStream out){
+	public MessageOutput(OutputStream out){
 		messageWriter = new OutputStreamWriter(out, CHARSET);
 	}
 	

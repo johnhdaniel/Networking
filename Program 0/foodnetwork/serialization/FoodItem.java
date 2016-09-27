@@ -5,16 +5,18 @@
  **********************************/
 package foodnetwork.serialization;
 
+import java.io.EOFException;
+
 /**
  * @author John
  *
  */
 public class FoodItem {
 	
-	private java.lang.String	name;
-	private MealType			mealType;
-	private long				calories;
-	private java.lang.String	fat;
+	private String		name;
+	private MealType	mealType;
+	private long		calories;
+	private String		fat;
 	
 	/**
 	 * Constructs food item with set values
@@ -24,7 +26,7 @@ public class FoodItem {
 	 * @param fat - grams of fat in food item
 	 * @throws FoodNetworkException if deserialization or validation failure
 	 */
-	public FoodItem(java.lang.String name,
+	public FoodItem(String name,
 	                MealType mealType,
 	                long calories,
 	                java.lang.String fat)
@@ -62,7 +64,7 @@ public class FoodItem {
 	 */
 	public FoodItem(MessageInput in)
 	         throws FoodNetworkException,
-	                java.io.EOFException{
+	                EOFException{
 		
 		String newName = in.getName();
 		MealType newMealType = in.getMealType();
@@ -115,7 +117,7 @@ public class FoodItem {
 	 * Overrides:
 	 * toString in class java.lang.Object
 	 */
-	public java.lang.String toString(){
+	public String toString(){
 		String result = "Name: " + name;
 		result += " MealType: " + mealType.toString();
 		result += " Calories: " + calories;
@@ -127,7 +129,7 @@ public class FoodItem {
 	 * returns name
 	 * @return name
 	 */
-	public final java.lang.String getName(){
+	public final String getName(){
 		return name;
 	}
 
@@ -136,7 +138,7 @@ public class FoodItem {
 	 * @param name
 	 * @throws FoodNetworkException
 	 */
-	public final void setName(java.lang.String name)
+	public final void setName(String name)
 	                   throws FoodNetworkException {
 		if (null == name){
 			throw new FoodNetworkException("Bad name");
@@ -190,7 +192,7 @@ public class FoodItem {
 	 * returns fat
 	 * @return fat
 	 */
-	public final java.lang.String getFat(){
+	public final String getFat(){
 		return fat;
 	}
 
@@ -199,7 +201,7 @@ public class FoodItem {
 	 * @param fat
 	 * @throws FoodNetworkException
 	 */
-	public final void setFat(java.lang.String fat)
+	public final void setFat(String fat)
 	                  throws FoodNetworkException {
 		if (null == fat){
 			throw new FoodNetworkException("Bad fat");
@@ -224,7 +226,7 @@ public class FoodItem {
 	 * Overrides:
 	 * equals in class java.lang.Object
 	 */
-	public boolean equals(java.lang.Object obj) {
+	public boolean equals(Object obj) {
 		if (null == this || null == obj){
 			return false;
 		}
