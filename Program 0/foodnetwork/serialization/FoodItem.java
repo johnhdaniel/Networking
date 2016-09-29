@@ -29,7 +29,7 @@ public class FoodItem {
 	public FoodItem(String name,
 	                MealType mealType,
 	                long calories,
-	                java.lang.String fat)
+	                String fat)
 	         throws FoodNetworkException {
 		if (null == name || name == ""){
 			throw new FoodNetworkException("Bad name");
@@ -118,11 +118,7 @@ public class FoodItem {
 	 * toString in class java.lang.Object
 	 */
 	public String toString(){
-		String result = "Name: " + name;
-		result += " MealType: " + mealType.toString();
-		result += " Calories: " + calories;
-		result += " Fat: " + fat;
-		return result;		
+		return name + " with " + calories + " calories and " + fat + "g of fat";		
 	}
 
 	/**
@@ -209,27 +205,49 @@ public class FoodItem {
 		this.fat = fat;
 	}
 
-	/**
-	 * Overrides:
-	 * hashcode in class java.lang.Object
-	 */
-	public int hashCode(){
-		int hash;
-		hash = (int) calories;
-		hash*= Double.parseDouble(fat);
-		hash*= 7;
-		hash = (int) Math.sqrt(hash);
-		return hash;
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (int) (calories ^ (calories >>> 32));
+		result = prime * result + ((fat == null) ? 0 : fat.hashCode());
+		result = prime * result + ((mealType == null) ? 0 : mealType.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
 	}
 
-	/**
-	 * Overrides:
-	 * equals in class java.lang.Object
-	 */
+	@Override
 	public boolean equals(Object obj) {
-		if (null == this || null == obj){
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
 			return false;
 		}
-		return this.toString().equals(obj.toString());
+		if (!(obj instanceof FoodItem)) {
+			return false;
+		}
+		FoodItem other = (FoodItem) obj;
+		if (calories != other.calories) {
+			return false;
+		}
+		if (fat == null) {
+			if (other.fat != null) {
+				return false;
+			}
+		} else if (!fat.equals(other.fat)) {
+			return false;
+		}
+		if (mealType != other.mealType) {
+			return false;
+		}
+		if (name == null) {
+			if (other.name != null) {
+				return false;
+			}
+		} else if (!name.equals(other.name)) {
+			return false;
+		}
+		return true;
 	}
 }

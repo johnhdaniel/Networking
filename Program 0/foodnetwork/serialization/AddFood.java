@@ -69,19 +69,34 @@ public class AddFood extends FoodMessage {
 	}
 		
 	@Override
-	public int hashCode(){
-		int hashCode;
-		hashCode = (int) (foodItem.hashCode() + messageTimestamp);
-		return (int)(Math.sqrt(hashCode));
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((foodItem == null) ? 0 : foodItem.hashCode());
+		return result;
 	}
 	
 	@Override
-	public boolean equals(Object obj){
-		 if (null == this || null == obj){
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!super.equals(obj)) {
+			return false;
+		}
+		if (!(obj instanceof AddFood)) {
+			return false;
+		}
+		AddFood other = (AddFood) obj;
+		if (foodItem == null) {
+			if (other.foodItem != null) {
 				return false;
 			}
-		return this.toString().equals(obj.toString());
-	 }
+		} else if (!foodItem.equals(other.foodItem)) {
+			return false;
+		}
+		return true;
+	}
 	
 	
 }

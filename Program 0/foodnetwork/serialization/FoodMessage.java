@@ -134,15 +134,28 @@ public abstract class FoodMessage {
 
 	@Override
 	public int hashCode() {
-		return (int) Math.sqrt((double) messageTimestamp);
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (int) (messageTimestamp ^ (messageTimestamp >>> 32));
+		return result;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (null == this || null == obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
 			return false;
 		}
-		return this.toString().equals(obj.toString());
+		if (!(obj instanceof FoodMessage)) {
+			return false;
+		}
+		FoodMessage other = (FoodMessage) obj;
+		if (messageTimestamp != other.messageTimestamp) {
+			return false;
+		}
+		return true;
 	}
 
 }

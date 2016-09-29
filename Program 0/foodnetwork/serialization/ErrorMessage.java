@@ -54,20 +54,34 @@ public class ErrorMessage extends FoodMessage {
 	}
 		
 	@Override
-	public int hashCode(){
-		int hashCode = (int) Math.sqrt(messageTimestamp);
-		hashCode *= errorMessage.charAt(0);
-		hashCode = (int) Math.sqrt(hashCode);
-		return hashCode;
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((errorMessage == null) ? 0 : errorMessage.hashCode());
+		return result;
 	}
 	
 	@Override
-	public boolean equals(Object obj){
-		 if (null == this || null == obj){
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!super.equals(obj)) {
+			return false;
+		}
+		if (!(obj instanceof ErrorMessage)) {
+			return false;
+		}
+		ErrorMessage other = (ErrorMessage) obj;
+		if (errorMessage == null) {
+			if (other.errorMessage != null) {
 				return false;
 			}
-		return this.toString().equals(obj.toString());
-	 }
+		} else if (!errorMessage.equals(other.errorMessage)) {
+			return false;
+		}
+		return true;
+	}
 	
 	@Override
 	public void getEncode(MessageOutput out) throws FoodNetworkException{

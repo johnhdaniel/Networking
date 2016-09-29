@@ -78,20 +78,38 @@ public class FoodList extends FoodMessage {
 	}
 	
 	@Override
-	public int hashCode(){
-		if (foodItemList.isEmpty()){
-			return 0;
-		}
-		return foodItemList.get(0).hashCode();
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((foodItemList == null) ? 0 : foodItemList.hashCode());
+		result = prime * result + (int) (modifiedTimestamp ^ (modifiedTimestamp >>> 32));
+		return result;
 	}
 	
 	@Override
-	public boolean equals(Object obj){
-		 if (null == this || null == obj){
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!super.equals(obj)) {
+			return false;
+		}
+		if (!(obj instanceof FoodList)) {
+			return false;
+		}
+		FoodList other = (FoodList) obj;
+		if (foodItemList == null) {
+			if (other.foodItemList != null) {
 				return false;
 			}
-		return this.toString().equals(obj.toString());
-	 }
+		} else if (!foodItemList.equals(other.foodItemList)) {
+			return false;
+		}
+		if (modifiedTimestamp != other.modifiedTimestamp) {
+			return false;
+		}
+		return true;
+	}
 	
 	@Override
 	public void getEncode(MessageOutput out) throws FoodNetworkException{
