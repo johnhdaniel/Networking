@@ -1,3 +1,8 @@
+/**********************************
+ * Author:		John Daniel
+ * Assignment:	Program 2
+ * Class:		CSI 4321
+ **********************************/
 package foodnetwork.serialization;
 
 /**

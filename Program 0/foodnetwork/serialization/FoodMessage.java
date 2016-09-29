@@ -1,14 +1,12 @@
-/**
- * 
- */
+/**********************************
+ * Author:		John Daniel
+ * Assignment:	Program 2
+ * Class:		CSI 4321
+ **********************************/
 package foodnetwork.serialization;
 
 import java.io.EOFException;
 
-/**
- * @author john
- *
- */
 public abstract class FoodMessage {
 
 	protected static final String 	PROTOCOL = "FN1.0";
