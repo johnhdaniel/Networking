@@ -1,6 +1,6 @@
 /**********************************
  * Author:		John Daniel
- * Assignment:	Program 2
+ * Assignment:	Program 3
  * Class:		CSI 4321
  **********************************/
 package foodnetwork.serialization;
@@ -24,14 +24,20 @@ public class MessageInput {
 	/**
 	 * Constructs a new input source from an InputStream
 	 * @param in - byte input source
-	 * @throws FoodNetworkException 
-	 * @throws IOException 
+	 * @throws FoodNetworkException if deserialization fails
+	 * @throws IOException if bad InputStream
 	 */
 	public MessageInput(InputStream in) throws FoodNetworkException, IOException{
 		inr = new InputStreamReader(in, CHARSET);
 	}
 	
-	protected String getName() throws FoodNetworkException, EOFException{
+	/**
+	 * Finds a string started with a character count
+	 * @return String containing characters after the character count
+	 * @throws FoodNetworkException if serialization/deserialization fails
+	 * @throws EOFException if premature end of file
+	 */
+	protected String getStringByNumberLength() throws FoodNetworkException, EOFException{
 		try{
 		int charCode = getInt();
 		char charReader;
@@ -49,6 +55,11 @@ public class MessageInput {
 		}
 	}
 	
+	/**
+	 * returns a double
+	 * @return a double
+	 * @throws FoodNetworkException if serialization/deserialization fails
+	 */
 	protected double getDouble() throws FoodNetworkException {
 		try {
 			return Double.parseDouble(getNumber());
@@ -61,6 +72,11 @@ public class MessageInput {
 		}
 	}
 	
+	/**
+	 * returns an integer value
+	 * @return an integer value
+	 * @throws FoodNetworkException if serialization/deserialization fails
+	 */
 	protected int getInt() throws FoodNetworkException{
 		try {
 			return Integer.parseInt(getNumber());
@@ -70,8 +86,15 @@ public class MessageInput {
 			throw new FoodNetworkException("Bad number");
 		} catch (FoodNetworkException e) {
 			throw new FoodNetworkException("Bad number");
-		}	}
+		}	
+	}
 	
+	/**
+	 * returns a string form of a number
+	 * @return String representing a number
+	 * @throws FoodNetworkException if serialization/deserialization fails
+	 * @throws EOFException if premature end of file
+	 */
 	protected String getNumber() throws FoodNetworkException, EOFException{
 		try{
 			String initNumber = "";
@@ -92,28 +115,50 @@ public class MessageInput {
 		}
 	}
 	
-	protected MealType getMealType() throws FoodNetworkException, EOFException{
+	/**
+	 * Returns a char
+	 * @return char received by reading one character
+	 * @throws FoodNetworkException if serialization/deserialization fails
+	 * @throws EOFException if premature end of file
+	 */
+	protected char getChar() throws FoodNetworkException, EOFException{
 		try{
 			char mealCode = (char) inr.read();
 			if (mealCode == EOF_DELIMITER){
 				throw new EOFException("Unexpected end of file");
 			}
-			MealType mealType = MealType.getMealType(mealCode);
-			return mealType;
+			return mealCode;
 		} catch (IOException e){
 			throw new FoodNetworkException("IOException: get meal type");
 		}
 	}
 	
-	protected long getCalories() throws FoodNetworkException, EOFException{
-		return (long)getInt();
-	}
-	
-	protected String getFat() throws FoodNetworkException, EOFException{
-		return String.valueOf(getNumber());
+	/**
+	 * returns a converted long from the String returned by getNumber()
+	 * @return long converted from String
+	 * @throws FoodNetworkException if serialization/deserialization fails
+	 * @throws EOFException if premature end of file
+	 */
+	protected long getLong() throws FoodNetworkException {
+		try {
+			return Long.valueOf(getNumber());
+		} catch (NumberFormatException e) {
+			throw new FoodNetworkException("Bad number");
+		} catch (EOFException e) {
+			throw new FoodNetworkException("Bad number");
+		} catch (FoodNetworkException e) {
+			throw new FoodNetworkException("Bad number");
+		}	
+		
 	}
 
-	protected String getRequest() throws FoodNetworkException, EOFException {
+	/**
+	 * returns a string request
+	 * @return String request
+	 * @throws FoodNetworkException if serialization/deserialization fails
+	 * @throws EOFException if premature end of file
+	 */
+	protected String getStringWithSpaceDelimiter() throws FoodNetworkException, EOFException {
 		try{
 			String request = "";
 			char charAt;
@@ -130,70 +175,15 @@ public class MessageInput {
 			throw new FoodNetworkException("IOException: Bad request");
 		}
 	}
-
-	protected long getTimestamp() throws FoodNetworkException, EOFException {
-		try {
-			long timestamp;
-			String initTimestamp = "";
-			char charAt;
-			charAt = (char) inr.read();
-			while(charAt != SPACE_DELIMITER){
-				if (charAt == EOF_DELIMITER){
-					throw new EOFException("Unexpected end of file");
-				}
-				initTimestamp+= charAt;
-				charAt = (char) inr.read();
-			}
-			timestamp = Long.parseLong(initTimestamp);
-			return timestamp;
-		} catch (IOException e) {
-			throw new FoodNetworkException("IOException: Bad timestamp");
-		} catch (NumberFormatException e) {
-			throw new FoodNetworkException("NumberFormatException: Bad timestamp");
-		}
-	}
-
-	protected String getErrorMessage() throws FoodNetworkException, EOFException {
-		try {
-			String errorMessage = "";
-			char charAt;
-			charAt = (char) inr.read();
-			while(charAt != NEWLINE_DELIMITER){
-				if (charAt == EOF_DELIMITER){
-					throw new EOFException("Unexpected end of file");
-				}
-				errorMessage+= charAt;
-				charAt = (char) inr.read();
-			}
-			return errorMessage;
-		} catch (IOException e) {
-			throw new FoodNetworkException("IOException: Bad error message");
-		}
-	}
-
-	protected String getProtocol() throws FoodNetworkException, EOFException {
-		try {
-			String protocol = "";
-			char charAt;
-			charAt = (char)inr.read();
-			while(charAt != SPACE_DELIMITER){
-				if (charAt == EOF_DELIMITER){
-					throw new EOFException("Unexpected end of file");
-				}
-				if (charAt != NEWLINE_DELIMITER){
-					protocol+= charAt;
-				}
-				charAt = (char)inr.read();
-			}
-			return protocol;
-		} catch (IOException e) {
-			throw new FoodNetworkException("IOException: Bad Protocol");
-		}	
-	}
 	
+	/**
+	 * reads a new line to ensure end of a message
+	 * @throws EOFException if premature end of file
+	 * @throws FoodNetworkException if serialization/deserialization fails
+	 */
 	protected void readNewLine() throws EOFException, FoodNetworkException {
 		try {
-			if (inr.read() == EOF_DELIMITER){
+			if (inr.read() != NEWLINE_DELIMITER){
 				throw new EOFException("Unexpected end of file");
 			}
 		} catch (IOException e) {

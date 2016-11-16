@@ -1,6 +1,6 @@
 /**********************************
  * Author:		John Daniel
- * Assignment:	Program 2
+ * Assignment:	Program 3
  * Class:		CSI 4321
  **********************************/
 package foodnetwork.serialization;
@@ -15,7 +15,7 @@ public class AddFood extends FoodMessage {
 
 	/**
 	 * Constructs new AddFood using set values
-	 * @param messageTimeStamp message timestamp
+	 * @param messageTimestamp message timestamp
 	 * @param foodItem new fooditem
 	 * @throws FoodNetworkException if validation fails
 	 */
@@ -67,10 +67,7 @@ public class AddFood extends FoodMessage {
 	
 	@Override
 	public String getRequest() {
-		String requestString = ADD_REQUEST;
-		
-		
-		return requestString;
+		return ADD_REQUEST;
 	}
 		
 	@Override

@@ -1,6 +1,6 @@
 /**********************************
  * Author:		John Daniel
- * Assignment:	Program 2
+ * Assignment:	Program 6
  * Class:		CSI 4321
  **********************************/
 package foodnetwork.client;
@@ -14,8 +14,16 @@ import foodnetwork.serialization.*;
 import java.io.EOFException;
 import java.io.IOException;
 
+/**
+ * FoodNetwork Client class - TCP Client that communicates with 
+ * 	the FoodNetworkServer. Sends and receives FoodMessages.
+ * @author John Daniel
+ *
+ */
 public class Client {
 	
+	private static final String STOP_EXECUTION = "n";
+	private static final String CONTINUE_EXECUTION = "y";
 	private static Scanner scan;
 	private static Socket socket;
 
@@ -51,15 +59,13 @@ public class Client {
 			scan.useDelimiter("\n");			
 			
 			while(true) {
-				boolean goodInput = true;
 				FoodMessage foodMessage = null;
 				
 				String request = askRequest();
 				
 				long timestamp = getTimestamp();
 				
-				if (request.equals("ADD")){
-					
+				if (request.equals(FoodMessage.ADD_REQUEST)){
 					String name = getName();
 					
 					char mealCode = getMealCode();
@@ -69,19 +75,26 @@ public class Client {
 					String fat = getFat();
 					
 					// Create a food item
-					FoodItem foodItem = new FoodItem(name, MealType.getMealType(mealCode), calories, fat);
+					FoodItem foodItem = new FoodItem(name, 
+													MealType.getMealType(mealCode), 
+													calories, 
+													fat);
 					// Create an Add food message
 					foodMessage = new AddFood(timestamp, foodItem);
 					
-				} else if (request.equals("GET")){
+				} else if (request.equals(FoodMessage.GET_REQUEST)){
 					// Create a Get food message
 					foodMessage = new GetFood(timestamp);
-				} 
+				} else if (request.equals(FoodMessage.INTERVAL_REQUEST)){
+					int intervalTime = getIntervalTime();
+					// Create a new Interval food message
+					foodMessage = new Interval(timestamp, intervalTime);
+				}
 				// Print the timestamp
 				System.out.println("Msg TS=" + timestamp + " - FoodItem");
 				
 				foodMessage.encode(out);
-				
+								
 				decode(in);
 				
 				continueRequests();
@@ -104,6 +117,24 @@ public class Client {
 		}
 	}
 
+	private static int getIntervalTime() {
+		boolean goodInput = false;
+		int time = -1;
+		while (!goodInput){
+			goodInput = true;
+			// Get the IntervaL
+			System.out.print("Interval Time> ");
+			String intervalString = scan.next();
+			try {
+				time = Integer.valueOf(intervalString);
+			} catch (NumberFormatException e) {
+				System.err.println("\nInvalid user input: " + intervalString);
+				goodInput = false;
+			}
+		}
+		return time;
+	}
+
 	/**
 	 * Asks client for (y/n) - asks repeatedly until correct input
 	 * @throws IOException if socket error occurs
@@ -114,10 +145,10 @@ public class Client {
 			goodInput = true;
 			System.out.print("\nContinue (y/n)>");
 			String next = scan.next();
-			if (next.equals("n")){
+			if (next.equals(STOP_EXECUTION)){
 				socket.close();
 				System.exit(0);
-			} else if (!next.equals("y")){
+			} else if (!next.equals(CONTINUE_EXECUTION)){
 				System.err.println("\nInvalid user input: " + next);
 				goodInput = false;
 			}
@@ -202,8 +233,10 @@ public class Client {
 			if (mealCodeString.length() != 1){
 				System.err.println("\nInvalid user input: " + mealCodeString);
 				goodInput = false;
-			} else if (!mealCodeString.equals("B") && !mealCodeString.equals("L") 
-					&& !mealCodeString.equals("D") && !mealCodeString.equals("S")) {
+			} else if (!mealCodeString.equals(String.valueOf(MealType.Breakfast.getMealTypeCode()))
+					&& !mealCodeString.equals(String.valueOf(MealType.Lunch.getMealTypeCode())) 
+					&& !mealCodeString.equals(String.valueOf(MealType.Dinner.getMealTypeCode()))
+					&& !mealCodeString.equals(String.valueOf(MealType.Snack.getMealTypeCode()))) {
 				System.err.println("\nInvalid user input: " + mealCodeString);
 				goodInput = false;
 			}
@@ -246,7 +279,7 @@ public class Client {
 	}
 
 	/**
-	 * asks client repeatedly for (ADD|GET)
+	 * asks client repeatedly for (ADD|GET|INTERVAL)
 	 * @return String containing valid request
 	 */
 	private static String askRequest() {
@@ -255,9 +288,11 @@ public class Client {
 		while (!goodInput){
 			goodInput = true;
 			// Prompt the user for the type of message to send to the server (GET or ADD)
-			System.out.print("\nRequest (ADD|GET)> ");
+			System.out.print("\nRequest (ADD|GET|INTERVAL)> ");
 			request = scan.next();
-			if (!request.equals("ADD") && !request.equals("GET")){
+			if (!request.equals(FoodMessage.ADD_REQUEST) 
+					&& !request.equals(FoodMessage.GET_REQUEST) 
+					&& !request.equals(FoodMessage.INTERVAL_REQUEST)){
 				goodInput = false;
 				System.err.println("\nInvalid user input: " + request);
 			}

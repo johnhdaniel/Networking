@@ -1,6 +1,6 @@
 /**********************************
  * Author:		John Daniel
- * Assignment:	Program 2
+ * Assignment:	Program 3
  * Class:		CSI 4321
  **********************************/
 package foodnetwork.serialization;
@@ -24,9 +24,9 @@ public class FoodList extends FoodMessage {
 	
 	/**
 	 * Constructs FoodList using set values
-	 * @param messageTimestamp
-	 * @param modifiedTimestamp
-	 * @throws FoodNetworkException
+	 * @param messageTimestamp messageTimestamp
+	 * @param modifiedTimestamp last modified foodItem
+	 * @throws FoodNetworkException if validation fails
 	 */
 	public FoodList(long messageTimestamp, long modifiedTimestamp)
 						throws FoodNetworkException{

@@ -1,6 +1,6 @@
 /**********************************
  * Author:		John Daniel
- * Assignment:	Program 2
+ * Assignment:	Program 3
  * Class:		CSI 4321
  **********************************/
 package foodnetwork.serialization.test;
@@ -14,6 +14,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import foodnetwork.serialization.FoodMessage;
+import foodnetwork.serialization.FoodNetworkException;
+import foodnetwork.serialization.GetFood;
 
 /**
  * @author john
@@ -21,40 +23,15 @@ import foodnetwork.serialization.FoodMessage;
  */
 public class GetFoodTest {
 
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-	}
+	GetFood test;
+	long messageTimestamp;
 
 	/**
-	 * @throws java.lang.Exception
-	 */
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-	}
-
-	/**
-	 * @throws java.lang.Exception
+	 * @throws java.lang.Exception FoodNetworkException
 	 */
 	@Before
 	public void setUp() throws Exception {
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@After
-	public void tearDown() throws Exception {
-	}
-
-	/**
-	 * Test method for {@link foodnetwork.serialization.GetFood#toString()}.
-	 */
-	@Test
-	public final void testToString() {
-		fail("Not yet implemented"); // TODO
+		test = new GetFood(messageTimestamp);
 	}
 
 	/**
@@ -62,15 +39,17 @@ public class GetFoodTest {
 	 */
 	@Test
 	public final void testGetRequest() {
-		fail("Not yet implemented"); // TODO
+		assertEquals("GET", test.getRequest());
 	}
 
 	/**
 	 * Test method for {@link foodnetwork.serialization.GetFood#GetFood(long)}.
+	 * @throws FoodNetworkException if validation fails
 	 */
 	@Test
-	public final void testGetFood() {
-		fail("Not yet implemented"); // TODO
+	public final void testGetFood() throws FoodNetworkException {
+		GetFood newTest = new GetFood(messageTimestamp);
+		assertEquals(newTest, test);
 	}
 
 }

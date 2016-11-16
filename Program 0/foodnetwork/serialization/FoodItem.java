@@ -1,6 +1,6 @@
 /**********************************
  * Author:		John Daniel
- * Assignment:	Program 2
+ * Assignment:	Program 3
  * Class:		CSI 4321
  **********************************/
 package foodnetwork.serialization;
@@ -66,10 +66,11 @@ public class FoodItem {
 	         throws FoodNetworkException,
 	                EOFException{
 		
-		String newName = in.getName();
-		MealType newMealType = in.getMealType();
-		long newCalories = in.getCalories();
-		String newFat = in.getFat();
+		String newName = in.getStringByNumberLength();
+		char mealCode = in.getChar();
+		MealType newMealType = MealType.getMealType(mealCode);
+		long newCalories = in.getLong();
+		String newFat = in.getNumber();
 		if (null == newName || newName == ""){
 			throw new FoodNetworkException("Bad name");
 		}
@@ -131,12 +132,12 @@ public class FoodItem {
 
 	/**
 	 * Sets name
-	 * @param name
-	 * @throws FoodNetworkException
+	 * @param name name to be set to this.name
+	 * @throws FoodNetworkException if improper name
 	 */
 	public final void setName(String name)
 	                   throws FoodNetworkException {
-		if (null == name){
+		if (null == name || name == ""){
 			throw new FoodNetworkException("Bad name");
 		}
 		this.name = name;
@@ -152,8 +153,8 @@ public class FoodItem {
 
 	/**
 	 * Sets meal type
-	 * @param mealType
-	 * @throws FoodNetworkException
+	 * @param mealType MealType to be set to this.mealType
+	 * @throws FoodNetworkException if improper mealType
 	 */
 	public final void setMealType(MealType mealType)
 	                       throws FoodNetworkException{
@@ -173,8 +174,8 @@ public class FoodItem {
 
 	/**
 	 * Sets calories
-	 * @param calories
-	 * @throws FoodNetworkException
+	 * @param calories calories to be set to this.calories
+	 * @throws FoodNetworkException if improper calories
 	 */
 	public final void setCalories(long calories)
 	                       throws FoodNetworkException{
@@ -194,8 +195,8 @@ public class FoodItem {
 
 	/**
 	 * Set fat
-	 * @param fat
-	 * @throws FoodNetworkException
+	 * @param fat fat to be set to this.fat
+	 * @throws FoodNetworkException if improper fat
 	 */
 	public final void setFat(String fat)
 	                  throws FoodNetworkException {

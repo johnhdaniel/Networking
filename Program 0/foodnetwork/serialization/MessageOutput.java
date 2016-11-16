@@ -1,6 +1,6 @@
 /**********************************
  * Author:		John Daniel
- * Assignment:	Program 2
+ * Assignment:	Program 3
  * Class:		CSI 4321
  **********************************/
 package foodnetwork.serialization;
@@ -27,7 +27,7 @@ public class MessageOutput {
 	/**
 	 * Writes the serialized string to the output stream
 	 * @param serialized - string to be written
-	 * @throws FoodNetworkException 
+	 * @throws FoodNetworkException if serialization fails
 	 */
 	public void write(String serialized) throws FoodNetworkException{
 		try {

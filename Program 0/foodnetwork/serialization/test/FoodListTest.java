@@ -1,6 +1,6 @@
 /**********************************
  * Author:		John Daniel
- * Assignment:	Program 2
+ * Assignment:	Program 3
  * Class:		CSI 4321
  **********************************/
 package foodnetwork.serialization.test;
@@ -13,38 +13,31 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import foodnetwork.serialization.FoodItem;
+import foodnetwork.serialization.FoodList;
+import foodnetwork.serialization.FoodNetworkException;
+import foodnetwork.serialization.MealType;
+
 /**
  * @author john
  *
  */
 public class FoodListTest {
+	
+	long messageTimestamp;
+	long messageTimestamp1;
+	long modifiedTimestamp;
+	long modifiedTimestamp1;
+	FoodList foodListTest;
+	FoodList foodListTest1;
 
 	/**
-	 * @throws java.lang.Exception
-	 */
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-	}
-
-	/**
-	 * @throws java.lang.Exception
+	 * @throws java.lang.Exception FoodNetworkException
 	 */
 	@Before
 	public void setUp() throws Exception {
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@After
-	public void tearDown() throws Exception {
+		foodListTest = new FoodList(messageTimestamp, modifiedTimestamp);
+		foodListTest1 = new FoodList(messageTimestamp1, modifiedTimestamp1);
 	}
 
 	/**
@@ -52,15 +45,8 @@ public class FoodListTest {
 	 */
 	@Test
 	public final void testHashCode() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link foodnetwork.serialization.FoodList#toString()}.
-	 */
-	@Test
-	public final void testToString() {
-		fail("Not yet implemented"); // TODO
+		FoodList newTest = foodListTest;
+		assertEquals(newTest.hashCode(), foodListTest.hashCode());
 	}
 
 	/**
@@ -68,7 +54,7 @@ public class FoodListTest {
 	 */
 	@Test
 	public final void testGetRequest() {
-		fail("Not yet implemented"); // TODO
+		assertEquals("LIST", foodListTest.getRequest());
 	}
 
 	/**
@@ -76,15 +62,18 @@ public class FoodListTest {
 	 */
 	@Test
 	public final void testEqualsObject() {
-		fail("Not yet implemented"); // TODO
+		FoodList newTest = foodListTest;
+		assertEquals(true, newTest.equals(foodListTest));
 	}
 
 	/**
 	 * Test method for {@link foodnetwork.serialization.FoodList#FoodList(long, long)}.
+	 * @throws FoodNetworkException if constructor fails
 	 */
 	@Test
-	public final void testFoodList() {
-		fail("Not yet implemented"); // TODO
+	public final void testFoodList() throws FoodNetworkException {
+		FoodList newTest = new FoodList(messageTimestamp, modifiedTimestamp);
+		assertEquals(foodListTest, newTest);
 	}
 
 	/**
@@ -92,31 +81,39 @@ public class FoodListTest {
 	 */
 	@Test
 	public final void testGetModifiedTimestamp() {
-		fail("Not yet implemented"); // TODO
+		assertEquals(modifiedTimestamp, foodListTest.getModifiedTimestamp());
 	}
 
 	/**
 	 * Test method for {@link foodnetwork.serialization.FoodList#setModifiedTimestamp(long)}.
+	 * @throws FoodNetworkException if validation failure
 	 */
 	@Test
-	public final void testSetModifiedTimestamp() {
-		fail("Not yet implemented"); // TODO
+	public final void testSetModifiedTimestamp() throws FoodNetworkException {
+		foodListTest.setModifiedTimestamp(modifiedTimestamp1);
+		assertEquals(modifiedTimestamp1, foodListTest.getModifiedTimestamp());
 	}
 
 	/**
 	 * Test method for {@link foodnetwork.serialization.FoodList#getFoodItemList()}.
+	 * @throws FoodNetworkException if validation failure
 	 */
 	@Test
-	public final void testGetFoodItemList() {
-		fail("Not yet implemented"); // TODO
+	public final void testGetFoodItemList() throws FoodNetworkException {
+		FoodItem testFood = new FoodItem("Plum",MealType.Snack,7,"1");
+		foodListTest.addFoodItem(testFood);
+		assertEquals(testFood, foodListTest.getFoodItemList().get(0));
 	}
 
 	/**
 	 * Test method for {@link foodnetwork.serialization.FoodList#addFoodItem(foodnetwork.serialization.FoodItem)}.
+	 * @throws FoodNetworkException  if validation failure
 	 */
 	@Test
-	public final void testAddFoodItem() {
-		fail("Not yet implemented"); // TODO
+	public final void testAddFoodItem() throws FoodNetworkException {
+		FoodItem testFood = new FoodItem("Plum",MealType.Snack,7,"1");
+		foodListTest.addFoodItem(testFood);
+		assertEquals(testFood, foodListTest.getFoodItemList().get(0));
 	}
 
 }

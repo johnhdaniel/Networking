@@ -1,6 +1,6 @@
 /**********************************
  * Author:		John Daniel
- * Assignment:	Program 2
+ * Assignment:	Program 3
  * Class:		CSI 4321
  **********************************/
 package foodnetwork.serialization;
@@ -25,7 +25,7 @@ public class ErrorMessage extends FoodMessage {
 		if (messageTimestamp < 0){
 			throw new FoodNetworkException("Bad meesagetimestamp");
 		}
-		if (errorMessage == null){
+		if (errorMessage == null || errorMessage == ""){
 			throw new FoodNetworkException("Null error message");
 		}
 		this.messageTimestamp = messageTimestamp;
@@ -52,7 +52,7 @@ public class ErrorMessage extends FoodMessage {
 	 */
 	public final void setErrorMessage(String errorMessage)
 						throws FoodNetworkException {
-		if (errorMessage == null){
+		if (errorMessage == null || errorMessage == ""){
 			throw new FoodNetworkException("null error message");
 		}
 		this.errorMessage = errorMessage;
